@@ -14,8 +14,12 @@ export class Main extends Component {
       .then(data => this.setState({ movies: data.Search }));
   }
 
-  searchHandler = str => {
-    fetch(`http://www.omdbapi.com/?apikey=4c9339f6&s=${str}`)
+  searchHandler = (str, type) => {
+    fetch(
+      `http://www.omdbapi.com/?apikey=4c9339f6&s=${str}${
+        type !== 'all' ? `&type=${type}` : ''
+      }`
+    )
       .then(response => response.json())
       .then(data => this.setState({ movies: data.Search }));
   };
