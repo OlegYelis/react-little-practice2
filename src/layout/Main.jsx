@@ -1,38 +1,47 @@
 import { Movies } from 'components/Movies/Movies';
 import { Preloader } from 'components/Preloader';
 import { Search } from 'components/Search/Search';
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 
-export class Main extends Component {
-  state = {
-    movies: [],
-    loading: true,
-  };
+export const Main = () => {
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  componentDidMount() {
+  useEffect(() => {
     fetch('http://www.omdbapi.com/?apikey=4c9339f6&s=matrix')
       .then(response => response.json())
-      .then(data => this.setState({ movies: data.Search, loading: false }));
-  }
+      .then(data => {
+        setMovies(data.Search);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
 
-  searchHandler = (str, type) => {
-    this.setState({ loading: true });
+  const searchHandler = (str, type) => {
+    setLoading(true);
     fetch(
       `http://www.omdbapi.com/?apikey=4c9339f6&s=${str}${
         type !== 'all' ? `&type=${type}` : ''
       }`
     )
       .then(response => response.json())
-      .then(data => this.setState({ movies: data.Search, loading: false }));
+      .then(data => {
+        setMovies(data.Search);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
-  render() {
-    const { movies, loading } = this.state;
-    return (
-      <main className="container content">
-        <Search searchHandler={this.searchHandler} />
-        {!loading ? <Movies movies={movies} /> : <Preloader />}
-      </main>
-    );
-  }
-}
+  return (
+    <main className="container content">
+      <Search searchHandler={searchHandler} />
+      {loading ? <Preloader /> : <Movies movies={movies} />}
+    </main>
+  );
+};
