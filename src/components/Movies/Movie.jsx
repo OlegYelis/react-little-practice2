@@ -6,9 +6,10 @@ export const Movie = ({ Title, Year, Type, Poster, imdbID }) => {
           <img
             className="activator"
             src={`https://via.placeholder.com/300x420?text=${Title}`}
+            alt={Title}
           />
         ) : (
-          <img className="activator" src={Poster} />
+          <img className="activator" src={Poster} alt={Title} />
         )}
       </div>
       <div className="card-content">
