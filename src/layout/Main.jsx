@@ -8,14 +8,14 @@ export const Main = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://www.omdbapi.com/?apikey=4c9339f6&s=matrix')
+    fetch('https://www.omdbapi.com/?apikey=4c9339f6&s=matrix')
       .then(response => response.json())
       .then(data => {
         setMovies(data.Search);
         setLoading(false);
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         setLoading(false);
       });
   }, []);
@@ -23,7 +23,7 @@ export const Main = () => {
   const searchHandler = (str, type) => {
     setLoading(true);
     fetch(
-      `http://www.omdbapi.com/?apikey=4c9339f6&s=${str}${
+      `https://www.omdbapi.com/?apikey=4c9339f6&s=${str}${
         type !== 'all' ? `&type=${type}` : ''
       }`
     )
@@ -33,7 +33,7 @@ export const Main = () => {
         setLoading(false);
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         setLoading(false);
       });
   };
